@@ -125,7 +125,6 @@ namespace CPUSchedulers {
 		// Till ready queue is not empty
 		while (!ready_queue.empty())
 		{
-
 			// While clock is less than
 			// Arrival Time
 			while (clock < ready_queue.top().AT)
@@ -167,6 +166,26 @@ namespace CPUSchedulers {
 		while (!processes.empty())
 		{
 			total += processes.top().WT;
+			processes.pop();
+		}
+		return total;
+	}
+
+	double get_total_TAT(priority_queue<process> processes)
+	{
+		double total = 0;
+		while (!processes.empty()) {
+			total += processes.top().TAT;
+			processes.pop();
+		}
+		return total;
+	}
+
+	double get_total_RT(priority_queue<process> processes)
+	{
+		double total = 0;
+		while (!processes.empty()) {
+			total += processes.top().RT;
 			processes.pop();
 		}
 		return total;
@@ -222,6 +241,8 @@ namespace CPUSchedulers {
 		}
 		priority_queue<process> tempq = main_queue;
 		output += "\n\nAverage waiting time :  " + to_string(get_total_WT(tempq) / main_queue.size());
+		output += "\nAverage Turn-around time : " + to_string(get_total_TAT(tempq) / main_queue.size());
+		output += "\nAverage Response time : " + to_string(get_total_RT(tempq) / main_queue.size());
 
 		return output;
 	}
@@ -1286,7 +1307,7 @@ private: System::Void Enter_processes_Click(System::Object^ sender, System::Even
 	}
 	catch (...)
 	{
-		MessageBox::Show("Please enter number from 1 to 100");
+		MessageBox::Show("Please enter an integer number from 1 to 100");
 
 	}
 	label3->Visible = true;
